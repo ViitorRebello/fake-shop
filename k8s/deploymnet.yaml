@@ -1,4 +1,4 @@
-# Deploymnet Interno
+# Deploymnet Interno - PostgreSQL
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,12 +35,14 @@ spec:
   selector:
     app: postgre
   ports:
-  - port: 5432
-    targetPort: 5432
+    - port: 5432
+      targetPort: 5432
+      nodePort: 31000  # Porta de NodePort para acessar internamente
+  type: NodePort  # Alterado para NodePort
 
 ---
-# Deploymnet Externo
 
+# Deploymnet Externo - fakeshop
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -82,7 +84,7 @@ spec:
   selector:
     app: fakeshop
   ports:
-  - port: 80
-    targetPort: 5000
-  type: LoadBalancer
-
+    - port: 80
+      targetPort: 5000
+      nodePort: 31001  # Porta de NodePort para acessar internamente
+  type: NodePort  # Alterado para NodePort
